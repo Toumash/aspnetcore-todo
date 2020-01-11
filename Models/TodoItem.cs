@@ -13,6 +13,7 @@ namespace aspnetcore_todo.Models
         [Display(Name = "Tytuł")]
         public string Title { get; set; }
         public bool Done { get; set; }
+        [Display(Name = "Utworzono")]
         public DateTime Created { get; set; }
         public string UserId { get; internal set; }
     }

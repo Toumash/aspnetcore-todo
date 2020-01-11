@@ -31,7 +31,7 @@ namespace aspnetcore_todo.Controllers
             var id = UserManager.GetUserId(this.User);
             var vm = new TasksViewModel()
             {
-                Tasks = await _context.TodoItem.Where(task => task.UserId == id).ToListAsync()
+                Tasks = await _context.TodoItem.Where(task => task.UserId == id && !task.Done).ToListAsync()
             };
             return View(vm);
         }
@@ -51,11 +51,20 @@ namespace aspnetcore_todo.Controllers
             var id = UserManager.GetUserId(this.User);
             var vm = new TasksViewModel()
             {
-                Tasks = await _context.TodoItem.Where(task => task.UserId == id).ToListAsync(),
+                Tasks = await _context.TodoItem.Where(task => task.UserId == id && !task.Done).ToListAsync(),
                 NewTask = todoItem.NewTask
             };
             return View(vm);
         }
+
+        // GET: Tasks/History
+        public async Task<IActionResult> History()
+        {
+            var id = UserManager.GetUserId(this.User);
+            return View(await _context.TodoItem.Where(task => task.UserId == id && task.Done)
+                .OrderByDescending(task => task.Created).ToListAsync());
+        }
+
         // GET: Tasks/Create
         public IActionResult Create()
         {
@@ -73,6 +82,7 @@ namespace aspnetcore_todo.Controllers
             {
                 todoItem.Id = Guid.NewGuid();
                 todoItem.UserId = UserManager.GetUserId(this.User);
+                todoItem.Created = DateTime.Now;
                 _context.Add(todoItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -85,7 +95,7 @@ namespace aspnetcore_todo.Controllers
         public async Task<IActionResult> Complete(Guid id)
         {
             var todoItem = await _context.TodoItem.FindAsync(id);
-            _context.TodoItem.Remove(todoItem);
+            todoItem.Done = true;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

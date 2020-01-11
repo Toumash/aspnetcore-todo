@@ -1,0 +1,42 @@
+﻿@model IEnumerable<TodoItem>
+
+@{
+    ViewData["Title"] = "Historia zadań";
+}
+
+<h1>Ukończone zadania</h1>
+
+<a asp-action="Index">Powrót do listy zadań</a>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Created)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Title)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <span>Brak ukończonych zadań</span>
+}
