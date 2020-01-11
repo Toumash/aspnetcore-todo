@@ -1,0 +1,52 @@
+﻿@model IEnumerable<IdentityUser>
+
+@{
+    ViewData["Title"] = "Panel Administratora";
+}
+
+<h1>Użytkownicy</h1>
+
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().UserName)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @if (item.Email != "root@root.com")
+                        {<a asp-action="Delete" asp-route-id="@item.Id">❌</a>}
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <span>Brak zadań!</span>
+}

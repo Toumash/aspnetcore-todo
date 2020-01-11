@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using aspnetcore_todo.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace aspnetcore_todo.Data
 {
