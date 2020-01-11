@@ -1,0 +1,49 @@
+﻿@model TasksViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Zadania</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NewTask.Title" class="control-label"></label>
+                <input asp-for="NewTask.Title" class="form-control" />
+                <span asp-validation-for="NewTask.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Utwórz" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@if (Model.Tasks.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Tasks.First().Title)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Tasks)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Complete" asp-route-id="@item.Id">✅</a> @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <span>Brak zadań!</span>
+}
