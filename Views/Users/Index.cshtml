@@ -40,6 +40,7 @@
                     <td>
                         @if (item.Email != "root@root.com")
                         {<a asp-action="Delete" asp-route-id="@item.Id">❌</a>}
+                        <a asp-action="ResetPassword" asp-route-id="@item.Id">Resetuj hasło</a>
                     </td>
                 </tr>
             }

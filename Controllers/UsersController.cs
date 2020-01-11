@@ -31,6 +31,27 @@ namespace aspnetcore_todo.Controllers
             return View(await _context.Users.ToListAsync());
         }
 
+        public IActionResult ResetPassword(string id)
+        {
+            return View(new ResetPasswordViewModel() { UserId = id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel vm, [FromServices] UserManager<IdentityUser> userManager)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var user = await userManager.FindByIdAsync(vm.UserId);
+                var result = await userManager.ChangePasswordAsync(user, vm.oldPassword, vm.newPassword);
+                if (result.Succeeded)
+                    return RedirectToAction(nameof(Index));
+                else
+                    ModelState.AddModelError("", string.Join(",", result.Errors.Select(e => e.Description)));
+                return View(vm);
+            }
+            return View(vm);
+        }
+
         // GET: Tasks/Create
         public IActionResult Create()
         {
